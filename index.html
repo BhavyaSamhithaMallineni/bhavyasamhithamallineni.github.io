@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhavya Samhitha Mallineni — Analytics Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #0f1117;
+  --panel: #161b27;
+  --panel2: #1c2333;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --accent: #38bdf8;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --purple: #a78bfa;
+  --coral: #f87171;
+  --teal: #2dd4bf;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border2);
+  padding: 0 24px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tb-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tb-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.tb-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.tb-tab {
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+  font-weight: 500;
+  text-decoration: none;
+}
+.tb-tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.tb-tab.active { color: var(--accent); background: rgba(56,189,248,0.1); }
+
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+.tb-name {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: #0f1117;
+}
+
+/* ── LAYOUT ── */
+.workspace {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border2);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-section {
+  padding: 0 12px;
+  margin-bottom: 24px;
+}
+
+.nav-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-item.active { color: var(--accent); background: rgba(56,189,248,0.1); }
+
+.nav-icon { font-size: 15px; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-bio {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── MAIN ── */
+.main {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page {
+  display: none;
+  padding: 24px;
+}
+.page.active { display: block; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.page-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-pill {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.15s;
+}
+.filter-pill:hover { color: var(--text); border-color: var(--accent); }
+.filter-pill.active { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,0.08); }
+
+/* ── KPI CARDS ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpi-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.kpi-card:hover { border-color: var(--border2); }
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.kpi-card.blue::before { background: var(--accent); }
+.kpi-card.green::before { background: var(--green); }
+.kpi-card.amber::before { background: var(--amber); }
+.kpi-card.purple::before { background: var(--purple); }
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.kpi-delta {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kpi-delta.up { color: var(--green); }
+.kpi-delta.down { color: var(--coral); }
+
+/* ── CHART GRID ── */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-grid-3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.chart-card.full {
+  grid-column: 1 / -1;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.chart-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.chart-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.chart-badge.green { background: rgba(52,211,153,0.12); color: var(--green); }
+.chart-badge.amber { background: rgba(251,191,36,0.12); color: var(--amber); }
+.chart-badge.blue  { background: rgba(56,189,248,0.12); color: var(--accent); }
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* ── FLOWCHART ── */
+.flow-svg {
+  width: 100%;
+  overflow: visible;
+}
+
+/* ── SKILLS TABLE ── */
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.skills-table th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+}
+
+.skills-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.skills-table tr:last-child td { border-bottom: none; }
+
+.skill-bar-wrap {
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  height: 6px;
+  width: 100%;
+}
+
+.skill-bar-fill {
+  height: 6px;
+  border-radius: 4px;
+}
+
+/* ── LEGEND ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── TIMELINE ── */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.timeline-item:last-child { border-bottom: none; }
+
+.timeline-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 2px;
+}
+
+.timeline-company {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.timeline-role {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.timeline-bullets {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.tl-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border: 1px solid;
+}
+
+/* ── PROJECTS ── */
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.proj-card {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  transition: border-color 0.2s;
+}
+.proj-card:hover { border-color: var(--border2); }
+
+.proj-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.proj-date { font-size: 11px; color: var(--muted); margin-bottom: 10px; font-family: 'IBM Plex Mono', monospace; }
+.proj-desc { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 14px; }
+
+.metric-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.metric-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* ── ABOUT PAGE ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.contact-item:last-child { border-bottom: none; }
+
+.contact-icon { color: var(--accent); font-size: 14px; width: 20px; }
+.contact-val { color: var(--text); }
+.contact-label { color: var(--muted); font-size: 11px; }
+
+@media (max-width: 900px) {
+  .workspace { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  .chart-grid, .chart-grid-3, .proj-grid, .about-grid { grid-template-columns: 1fr; }
+  .tb-tabs { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">BSM Analytics</div>
+    <div class="tb-tabs">
+      <a class="tb-tab active" href="#" onclick="showPage('overview',this)">Overview</a>
+      <a class="tb-tab" href="#" onclick="showPage('experience',this)">Experience</a>
+      <a class="tb-tab" href="#" onclick="showPage('skills',this)">Skills</a>
+      <a class="tb-tab" href="#" onclick="showPage('projects',this)">Projects</a>
+      <a class="tb-tab" href="#" onclick="showPage('about',this)">About</a>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="status-dot"></div>
+    <div class="tb-name">Open to opportunities</div>
+    <div class="avatar">BS</div>
+  </div>
+</div>
+
+<div class="workspace">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-label">Pages</div>
+      <a class="nav-item active" href="#" onclick="showPage('overview',null,this)"><span class="nav-icon">▦</span> Overview</a>
+      <a class="nav-item" href="#" onclick="showPage('experience',null,this)"><span class="nav-icon">◈</span> Experience</a>
+      <a class="nav-item" href="#" onclick="showPage('skills',null,this)"><span class="nav-icon">◉</span> Skills</a>
+      <a class="nav-item" href="#" onclick="showPage('projects',null,this)"><span class="nav-icon">◎</span> Projects</a>
+      <a class="nav-item" href="#" onclick="showPage('about',null,this)"><span class="nav-icon">◯</span> About</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Stack</div>
+      <div class="nav-item"><span class="nav-icon" style="color:var(--accent)">●</span> Snowflake + dbt</div>
+      <div class="nav-item"><span class="nav-icon" style="color:var(--green)">●</span> GCP / BigQuery</div>
+      <div class="nav-item"><span class="nav-icon" style="color:var(--amber)">●</span> Python / SQL</div>
+      <div class="nav-item"><span class="nav-icon" style="color:var(--purple)">●</span> TensorFlow / PyTorch</div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-bio">📍 Austin, TX<br>📧 samhithamallineni@gmail.com<br>2+ yrs · Analytics Engineering</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- ─────────── OVERVIEW PAGE ─────────── -->
+    <div class="page active" id="page-overview">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Bhavya Samhitha Mallineni</div>
+          <div class="page-sub">Data Analytics Engineer · Last updated Apr 2025</div>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-pill active">All time</div>
+          <div class="filter-pill">2024</div>
+          <div class="filter-pill">2023</div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-label">Years Experience</div>
+          <div class="kpi-value">2+</div>
+          <div class="kpi-delta up">▲ 3 companies</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Engagement Growth</div>
+          <div class="kpi-value">12%</div>
+          <div class="kpi-delta up">▲ FloSports Q1 2025</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-label">Ad-hoc Request Drop</div>
+          <div class="kpi-value">40%</div>
+          <div class="kpi-delta up">▲ Mode dashboards</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-label">Churn Model AUC</div>
+          <div class="kpi-value">0.88</div>
+          <div class="kpi-delta up">▲ XGBoost pipeline</div>
+        </div>
+      </div>
+
+      <!-- Charts row 1 -->
+      <div class="chart-grid">
+        <!-- Line chart: Impact timeline -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Impact Timeline — Efficiency Gains</div>
+              <div class="chart-sub">% improvement delivered per role over time</div>
+            </div>
+            <div class="chart-badge green">+↑ Trending</div>
+          </div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="lineChart"></canvas>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8"></div>Analytics turnaround</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#34d399"></div>Decision speed</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#fbbf24"></div>Data accuracy</div>
+          </div>
+        </div>
+
+        <!-- Doughnut: Tech stack -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Tech Stack Composition</div>
+              <div class="chart-sub">Skills by domain area</div>
+            </div>
+            <div class="chart-badge blue">6 domains</div>
+          </div>
+          <div class="chart-wrap" style="height:180px;">
+            <canvas id="donutChart"></canvas>
+          </div>
+          <div class="legend" style="margin-top:8px">
+            <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8"></div>Data Eng</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#a78bfa"></div>ML/AI</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#34d399"></div>Analytics</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#fbbf24"></div>Cloud</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#f87171"></div>Prog.</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:#2dd4bf"></div>Data Sci.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts row 2 -->
+      <div class="chart-grid">
+        <!-- Bar chart: quantified wins -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Quantified Wins by Company</div>
+              <div class="chart-sub">% improvements delivered</div>
+            </div>
+            <div class="chart-badge amber">3 roles</div>
+          </div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Radar chart: competencies -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Core Competency Radar</div>
+              <div class="chart-sub">Self-assessed proficiency by area</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flowchart: Career journey -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Career Journey — Process Flow</div>
+            <div class="chart-sub">From ECE foundation to analytics engineering</div>
+          </div>
+          <div class="chart-badge blue">5 stages</div>
+        </div>
+        <svg class="flow-svg" viewBox="0 0 860 160">
+          <defs>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M1 1L9 5L1 9" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- Stage boxes -->
+          <!-- 1 -->
+          <rect x="10" y="48" width="140" height="52" rx="6" fill="#1c2333" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.5"/>
+          <text x="80" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#38bdf8">B.E. Electronics</text>
+          <text x="80" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#64748b">Osmania Univ.</text>
+          <text x="80" y="103" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#475569">2017–2021</text>
+
+          <!-- arrow -->
+          <line x1="150" y1="74" x2="176" y2="74" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arrowhead)"/>
+
+          <!-- 2 -->
+          <rect x="178" y="48" width="148" height="52" rx="6" fill="#1c2333" stroke="#a78bfa" stroke-width="1" stroke-opacity="0.5"/>
+          <text x="252" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#a78bfa">Deloitte USI</text>
+          <text x="252" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#64748b">Data Science Analyst</text>
+          <text x="252" y="103" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#475569">2021–2023</text>
+
+          <!-- arrow -->
+          <line x1="326" y1="74" x2="352" y2="74" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arrowhead)"/>
+
+          <!-- 3 -->
+          <rect x="354" y="48" width="148" height="52" rx="6" fill="#1c2333" stroke="#fbbf24" stroke-width="1" stroke-opacity="0.5"/>
+          <text x="428" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#fbbf24">M.S. EE @ USC</text>
+          <text x="428" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#64748b">ML · Deep Learning</text>
+          <text x="428" y="103" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#475569">2023–2025</text>
+
+          <!-- arrow -->
+          <line x1="502" y1="74" x2="528" y2="74" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arrowhead)"/>
+
+          <!-- 4 -->
+          <rect x="530" y="48" width="148" height="52" rx="6" fill="#1c2333" stroke="#34d399" stroke-width="1" stroke-opacity="0.5"/>
+          <text x="604" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#34d399">USC Transport</text>
+          <text x="604" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#64748b">Data &amp; Ops Analyst</text>
+          <text x="604" y="103" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#475569">2024–2025</text>
+
+          <!-- arrow -->
+          <line x1="678" y1="74" x2="704" y2="74" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.5" marker-end="url(#arrowhead)"/>
+
+          <!-- 5 (current) -->
+          <rect x="706" y="38" width="148" height="72" rx="6" fill="rgba(56,189,248,0.07)" stroke="#38bdf8" stroke-width="1.5"/>
+          <rect x="706" y="38" width="148" height="4" rx="2" fill="#38bdf8"/>
+          <text x="780" y="64" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#38bdf8">FloSports</text>
+          <text x="780" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#94a3b8">Analytics Engineer</text>
+          <text x="780" y="100" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#38bdf8">Oct 2024 → Present</text>
+
+          <!-- CURRENT badge -->
+          <rect x="742" y="20" width="76" height="16" rx="8" fill="#38bdf8"/>
+          <text x="780" y="32" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#0f1117">● CURRENT</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ─────────── EXPERIENCE PAGE ─────────── -->
+    <div class="page" id="page-experience">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Experience</div>
+          <div class="page-sub">Professional history & quantified impact</div>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <!-- Horizontal bar: impact per company -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Efficiency Gains — All Roles</div>
+              <div class="chart-sub">% improvement across key metrics</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:260px">
+            <canvas id="hbarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Line: award / milestone timeline -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Quarterly Contribution</div>
+              <div class="chart-sub">Cumulative impact score by quarter</div>
+            </div>
+            <div class="chart-badge green">+12% engagement</div>
+          </div>
+          <div class="chart-wrap" style="height:260px">
+            <canvas id="contribChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience timeline -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Role Details</div>
+            <div class="chart-sub">Full experience breakdown</div>
+          </div>
+        </div>
+        <div>
+          <div class="timeline-item">
+            <div class="timeline-date">Oct 2024<br>→ Present<br><br><span style="color:var(--accent);font-size:10px">● CURRENT</span></div>
+            <div>
+              <div class="timeline-company">FloSports — Austin, TX</div>
+              <div class="timeline-role">Data Analytics Engineer</div>
+              <div>
+                <span class="tl-tag" style="background:rgba(56,189,248,0.1);color:var(--accent);border-color:rgba(56,189,248,0.3)">dbt</span>
+                <span class="tl-tag" style="background:rgba(56,189,248,0.1);color:var(--accent);border-color:rgba(56,189,248,0.3)">Snowflake</span>
+                <span class="tl-tag" style="background:rgba(56,189,248,0.1);color:var(--accent);border-color:rgba(56,189,248,0.3)">Mode</span>
+                <span class="tl-tag" style="background:rgba(56,189,248,0.1);color:var(--accent);border-color:rgba(56,189,248,0.3)">Bayesian A/B</span>
+              </div>
+              <div class="timeline-bullets" style="margin-top:8px">
+                → Built dbt models on Snowflake, reducing analytics turnaround by ~20%<br>
+                → Delivered quarterly subscription & revenue analysis; drove 12% engagement growth<br>
+                → Mode dashboards reduced ad-hoc requests by 40%<br>
+                → Bayesian A/B testing framework cut pricing decision time by 25%
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-date">Sep 2024<br>→ May 2025</div>
+            <div>
+              <div class="timeline-company">USC Transportation — Los Angeles, CA</div>
+              <div class="timeline-role">Data & Operations Analyst</div>
+              <div>
+                <span class="tl-tag" style="background:rgba(167,139,250,0.1);color:var(--purple);border-color:rgba(167,139,250,0.3)">Power BI</span>
+                <span class="tl-tag" style="background:rgba(167,139,250,0.1);color:var(--purple);border-color:rgba(167,139,250,0.3)">DAX</span>
+                <span class="tl-tag" style="background:rgba(167,139,250,0.1);color:var(--purple);border-color:rgba(167,139,250,0.3)">KPIs</span>
+              </div>
+              <div class="timeline-bullets" style="margin-top:8px">
+                → Streamlined Power BI dashboards with DAX, cutting delays by 30%<br>
+                → Defined KPIs & real-time metrics, improving decision speed by 25%<br>
+                → Improved schedule accuracy by 20% through log cross-checking<br>
+                → Led 3 teams, 30+ staff for shuttle operations
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-date">Sep 2021<br>→ Jul 2023</div>
+            <div>
+              <div class="timeline-company">Deloitte USI Consulting — Hyderabad, India</div>
+              <div class="timeline-role">Analyst – Data Science Specialist</div>
+              <div>
+                <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">GCP</span>
+                <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">ETL</span>
+                <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">MLOps</span>
+                <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">Flask API</span>
+                <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">2× Awards</span>
+              </div>
+              <div class="timeline-bullets" style="margin-top:8px">
+                → ETL pipelines on GCP: 100% data accuracy on large-scale datasets<br>
+                → Automated SQL validation scripts: 20% faster QA<br>
+                → ML eligibility models + MLOps: real-time inference for 1K+ users<br>
+                → A/B & causal analysis across 3 business units<br>
+                → Flask APIs + Power BI: 30% faster decisions | 2× Performance Awards
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── SKILLS PAGE ─────────── -->
+    <div class="page" id="page-skills">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Skills & Stack</div>
+          <div class="page-sub">Proficiency breakdown by category</div>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <!-- Polar chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Domain Strength — Polar Area</div>
+              <div class="chart-sub">Relative proficiency by discipline</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:260px">
+            <canvas id="polarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Bubble chart: Tools -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Tool Usage — Frequency vs Depth</div>
+              <div class="chart-sub">Bubble size = impact delivered</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:260px">
+            <canvas id="bubbleChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills table -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Skill Proficiency Index</div>
+            <div class="chart-sub">Detailed breakdown with proficiency bars</div>
+          </div>
+        </div>
+        <table class="skills-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Category</th>
+              <th>Proficiency</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>SQL / dbt</td><td><span style="color:var(--accent)">Data Engineering</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:95%;background:var(--accent)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent)">Expert</td></tr>
+            <tr><td>Snowflake</td><td><span style="color:var(--accent)">Data Engineering</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:90%;background:var(--accent)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent)">Expert</td></tr>
+            <tr><td>Python</td><td><span style="color:var(--amber)">Programming</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:92%;background:var(--amber)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--amber)">Expert</td></tr>
+            <tr><td>Power BI / Mode</td><td><span style="color:var(--purple)">Visualization</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:90%;background:var(--purple)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--purple)">Expert</td></tr>
+            <tr><td>TensorFlow / PyTorch</td><td><span style="color:var(--green)">ML & AI</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:82%;background:var(--green)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green)">Advanced</td></tr>
+            <tr><td>Bayesian A/B Testing</td><td><span style="color:var(--teal)">Data Science</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:88%;background:var(--teal)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--teal)">Expert</td></tr>
+            <tr><td>GCP / BigQuery</td><td><span style="color:var(--accent)">Cloud</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:85%;background:var(--accent)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent)">Advanced</td></tr>
+            <tr><td>MLflow / MLOps</td><td><span style="color:var(--green)">ML & AI</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:80%;background:var(--green)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green)">Advanced</td></tr>
+            <tr><td>Apache Spark</td><td><span style="color:var(--accent)">Data Engineering</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:75%;background:var(--accent)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">Proficient</td></tr>
+            <tr><td>Docker / Kubernetes</td><td><span style="color:var(--coral)">DevOps</span></td><td><div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:72%;background:var(--coral)"></div></div></td><td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">Proficient</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────── PROJECTS PAGE ─────────── -->
+    <div class="page" id="page-projects">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Projects</div>
+          <div class="page-sub">End-to-end ML & analytics builds</div>
+        </div>
+      </div>
+
+      <div class="proj-grid" style="margin-bottom:20px">
+        <div class="proj-card">
+          <div class="proj-date">NOV 2024 – DEC 2024</div>
+          <div class="proj-title">Real-Time Twitter Sentiment Analysis</div>
+          <div class="proj-desc">Built a real-time sentiment pipeline using Logistic Regression and BERT. Processed 10K+ tweets/hour via Twitter API. Cleaned and engineered text features using NLTK and spaCy. Deployed a live Streamlit dashboard with Plotly for trend visualization.</div>
+          <div class="metric-row">
+            <span class="metric-chip" style="background:rgba(56,189,248,0.1);color:var(--accent)">82% Accuracy</span>
+            <span class="metric-chip" style="background:rgba(52,211,153,0.1);color:var(--green)">10K+ tweets/hr</span>
+            <span class="metric-chip" style="background:rgba(167,139,250,0.1);color:var(--purple)">BERT · NLTK · spaCy</span>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-date">SEP 2024 – OCT 2024</div>
+          <div class="proj-title">Customer Churn Prediction Pipeline</div>
+          <div class="proj-desc">Designed a churn prediction system using Logistic Regression and XGBoost. Engineered RFM features and tenure-based segmentation to detect early churn signals. Achieved 84% accuracy and 0.88 AUC, reducing customer loss by 13%.</div>
+          <div class="metric-row">
+            <span class="metric-chip" style="background:rgba(251,191,36,0.1);color:var(--amber)">84% Accuracy</span>
+            <span class="metric-chip" style="background:rgba(52,211,153,0.1);color:var(--green)">0.88 AUC</span>
+            <span class="metric-chip" style="background:rgba(248,113,113,0.1);color:var(--coral)">−13% Churn</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects comparison chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Project Performance Metrics</div>
+            <div class="chart-sub">Key results across both projects</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="projChart"></canvas>
+        </div>
+        <div class="legend" style="margin-top:12px">
+          <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8"></div>Sentiment Pipeline</div>
+          <div class="legend-item"><div class="legend-swatch" style="background:#a78bfa"></div>Churn Predictor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── ABOUT PAGE ─────────── -->
+    <div class="page" id="page-about">
+      <div class="page-header">
+        <div>
+          <div class="page-title">About</div>
+          <div class="page-sub">Profile & contact information</div>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Contact & Links</div></div>
+          </div>
+          <div>
+            <div class="contact-item">
+              <div class="contact-icon">✉</div>
+              <div>
+                <div class="contact-val">samhithamallineni@gmail.com</div>
+                <div class="contact-label">Email</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">☎</div>
+              <div>
+                <div class="contact-val">(949) 547-0409</div>
+                <div class="contact-label">Phone</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div>
+                <div class="contact-val">Austin, Texas</div>
+                <div class="contact-label">Location</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">in</div>
+              <div>
+                <div class="contact-val">@bhavya-samhitha-mallineni</div>
+                <div class="contact-label">LinkedIn</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">⌥</div>
+              <div>
+                <div class="contact-val">@BhavyaSamhithaMallineni</div>
+                <div class="contact-label">GitHub</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Education</div></div>
+          </div>
+          <div>
+            <div class="timeline-item">
+              <div class="timeline-date">2023–2025</div>
+              <div>
+                <div class="timeline-company">University of Southern California</div>
+                <div class="timeline-role">M.S. Electrical Engineering · Los Angeles, CA</div>
+                <div class="timeline-bullets">ML, Deep Learning, Mathematical Optimization, Digital Image Processing, Probability, Linear Algebra</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2017–2021</div>
+              <div>
+                <div class="timeline-company">Osmania University</div>
+                <div class="timeline-role">B.E. Electronics & Communication · Hyderabad, India</div>
+                <div class="timeline-bullets">Signal Processing, Embedded Systems, Communication Theory</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="grid-column:1/-1">
+          <div class="chart-header">
+            <div><div class="chart-title">About Me</div></div>
+          </div>
+          <p style="color:#94a3b8;line-height:1.8;font-size:14px">
+            I am a Data Analytics Engineer with 2+ years of experience building SQL- and dbt-driven analytics pipelines on Snowflake and GCP. I specialize in turning raw data into decision-ready insights across subscription revenue, engagement, and pricing experiments.<br><br>
+            My work spans analytics engineering, experimentation (Bayesian A/B testing), demand forecasting, and ML-powered analytics, with a strong focus on data quality, reproducibility, and stakeholder trust.
+          </p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+            <span class="tl-tag" style="background:rgba(56,189,248,0.1);color:var(--accent);border-color:rgba(56,189,248,0.3)">Analytics Engineering</span>
+            <span class="tl-tag" style="background:rgba(167,139,250,0.1);color:var(--purple);border-color:rgba(167,139,250,0.3)">Experimentation</span>
+            <span class="tl-tag" style="background:rgba(52,211,153,0.1);color:var(--green);border-color:rgba(52,211,153,0.3)">ML Systems</span>
+            <span class="tl-tag" style="background:rgba(251,191,36,0.1);color:var(--amber);border-color:rgba(251,191,36,0.3)">Data Products</span>
+            <span class="tl-tag" style="background:rgba(45,212,191,0.1);color:var(--teal);border-color:rgba(45,212,191,0.3)">AI-driven Decisions</span>
+            <span class="tl-tag" style="background:rgba(248,113,113,0.1);color:var(--coral);border-color:rgba(248,113,113,0.3)">Storytelling with Data</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── NAVIGATION ──
+function showPage(id, topEl, sideEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.tb-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+  if (topEl) { topEl.classList.add('active'); }
+  else {
+    document.querySelectorAll('.tb-tab').forEach(t => {
+      if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'"+id+"'")) t.classList.add('active');
+    });
+  }
+  if (sideEl) { sideEl.classList.add('active'); }
+  else {
+    document.querySelectorAll('.nav-item').forEach(t => {
+      if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'"+id+"'")) t.classList.add('active');
+    });
+  }
+  return false;
+}
+
+// ── CHART DEFAULTS ──
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+// ── LINE CHART: Impact Timeline ──
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: ['Sep 2021','Mar 2022','Sep 2022','Mar 2023','Sep 2024','Mar 2025'],
+    datasets: [
+      { label: 'Analytics turnaround', data: [0,10,15,20,25,40], borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.08)', tension: 0.4, fill: true, pointRadius: 4, pointBackgroundColor: '#38bdf8' },
+      { label: 'Decision speed', data: [0,5,10,12,25,30], borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.08)', tension: 0.4, fill: true, pointRadius: 4, pointBackgroundColor: '#34d399' },
+      { label: 'Data accuracy', data: [0,20,60,100,100,100], borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.05)', tension: 0.4, fill: false, pointRadius: 4, pointBackgroundColor: '#fbbf24' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v + '%' }, min: 0, max: 110 },
+      x: { grid: { display: false }, ticks: { maxRotation: 0 } }
+    }
+  }
+});
+
+// ── DONUT CHART: Stack ──
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Data Eng','ML/AI','Analytics & BI','Cloud','Programming','Data Science'],
+    datasets: [{ data: [25,20,18,15,12,10], backgroundColor: ['#38bdf8','#a78bfa','#34d399','#fbbf24','#f87171','#2dd4bf'], borderWidth: 0, hoverOffset: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '65%',
+    plugins: { legend: { display: false } }
+  }
+});
+
+// ── BAR CHART: Wins ──
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Turnaround\n~20%', 'Engagement\n12%', 'Ad-hoc req\n-40%', 'Decision\n25%', 'Dashboard\n30%', 'QA speed\n20%', 'Decisions\n30%'],
+    datasets: [
+      { label: 'FloSports', data: [20,12,40,25,0,0,0], backgroundColor: '#38bdf8', borderRadius: 4 },
+      { label: 'USC Transport', data: [0,0,0,0,30,0,0], backgroundColor: '#a78bfa', borderRadius: 4 },
+      { label: 'Deloitte', data: [0,0,0,0,0,20,30], backgroundColor: '#fbbf24', borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 0, font: { size: 10 } } },
+      y: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ── RADAR CHART ──
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['SQL / dbt','Python / ML','Data Viz','Cloud / ETL','A/B Testing','MLOps'],
+    datasets: [{
+      label: 'Proficiency',
+      data: [95,88,90,85,88,80],
+      borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,0.12)',
+      pointBackgroundColor: '#38bdf8', borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { r: { min: 60, max: 100, grid: { color: 'rgba(255,255,255,0.07)' }, angleLines: { color: 'rgba(255,255,255,0.07)' }, ticks: { display: false }, pointLabels: { font: { size: 12 }, color: '#94a3b8' } } }
+  }
+});
+
+// ── HBAR CHART: Exp page ──
+new Chart(document.getElementById('hbarChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Analytics turnaround','Engagement growth','Ad-hoc requests','Decision time (A/B)','Dashboard delays','Schedule accuracy','QA turnaround','Decision making'],
+    datasets: [{
+      label: '% improvement',
+      data: [20,12,40,25,30,20,20,30],
+      backgroundColor: ['#38bdf8','#38bdf8','#38bdf8','#38bdf8','#a78bfa','#a78bfa','#fbbf24','#fbbf24'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v + '%' } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ── CONTRIB CHART ──
+new Chart(document.getElementById('contribChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q4 21','Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 24','Q4 24','Q1 25'],
+    datasets: [{
+      label: 'Impact score',
+      data: [5,15,25,38,52,60,65,70,78,90],
+      borderColor: '#34d399',
+      backgroundColor: 'rgba(52,211,153,0.08)',
+      fill: true, tension: 0.4,
+      pointRadius: 4, pointBackgroundColor: '#34d399'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, min: 0, max: 100 },
+      x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } }
+    }
+  }
+});
+
+// ── POLAR CHART ──
+new Chart(document.getElementById('polarChart'), {
+  type: 'polarArea',
+  data: {
+    labels: ['Data Engineering','ML & AI','Analytics & BI','Data Science','Cloud','Programming'],
+    datasets: [{
+      data: [95,85,90,88,82,88],
+      backgroundColor: ['rgba(56,189,248,0.5)','rgba(167,139,250,0.5)','rgba(52,211,153,0.5)','rgba(45,212,191,0.5)','rgba(251,191,36,0.5)','rgba(248,113,113,0.5)'],
+      borderColor: ['#38bdf8','#a78bfa','#34d399','#2dd4bf','#fbbf24','#f87171'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { r: { grid: { color: 'rgba(255,255,255,0.07)' }, ticks: { display: false } } }
+  }
+});
+
+// ── BUBBLE CHART ──
+new Chart(document.getElementById('bubbleChart'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'Snowflake', data: [{x:85,y:90,r:18}], backgroundColor: 'rgba(56,189,248,0.5)', borderColor: '#38bdf8' },
+      { label: 'dbt', data: [{x:80,y:85,r:15}], backgroundColor: 'rgba(56,189,248,0.35)', borderColor: '#38bdf8' },
+      { label: 'Python', data: [{x:90,y:88,r:20}], backgroundColor: 'rgba(251,191,36,0.5)', borderColor: '#fbbf24' },
+      { label: 'TensorFlow', data: [{x:70,y:80,r:16}], backgroundColor: 'rgba(167,139,250,0.5)', borderColor: '#a78bfa' },
+      { label: 'Power BI', data: [{x:75,y:88,r:17}], backgroundColor: 'rgba(52,211,153,0.5)', borderColor: '#34d399' },
+      { label: 'GCP', data: [{x:65,y:75,r:14}], backgroundColor: 'rgba(251,191,36,0.35)', borderColor: '#fbbf24' },
+      { label: 'Mode', data: [{x:72,y:85,r:13}], backgroundColor: 'rgba(45,212,191,0.5)', borderColor: '#2dd4bf' },
+      { label: 'MLflow', data: [{x:60,y:72,r:11}], backgroundColor: 'rgba(167,139,250,0.35)', borderColor: '#a78bfa' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ' (usage:' + ctx.raw.x + ' depth:' + ctx.raw.y + ')' } } },
+    scales: {
+      x: { min: 45, max: 100, title: { display: true, text: 'Usage Frequency', color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+      y: { min: 55, max: 100, title: { display: true, text: 'Depth of Knowledge', color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+    }
+  }
+});
+
+// ── PROJ CHART ──
+new Chart(document.getElementById('projChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Accuracy','Data Volume','Speed Gain','Business Impact'],
+    datasets: [
+      { label: 'Sentiment Pipeline', data: [82,95,75,70], backgroundColor: 'rgba(56,189,248,0.6)', borderColor: '#38bdf8', borderWidth: 1, borderRadius: 4 },
+      { label: 'Churn Predictor',   data: [84,70,80,87], backgroundColor: 'rgba(167,139,250,0.6)', borderColor: '#a78bfa', borderWidth: 1, borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, min: 0, max: 100, ticks: { callback: v => v + '%' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
