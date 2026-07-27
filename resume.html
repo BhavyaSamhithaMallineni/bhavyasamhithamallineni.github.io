@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume · Bhavya Samhitha Mallineni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700&family=Big+Shoulders+Display:wght@600;700;800&family=Karla:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAF3F8;
+    --paper-warm:#DCEBF3;
+    --sky:#6FA8C9;
+    --sky-deep:#3D7695;
+    --sky-soft:#A9CEE0;
+    --ink:#1F2E38;
+    --ink-soft:#4A5F6E;
+    --line:rgba(31,46,56,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--paper); color:var(--ink); font-family:'Karla',sans-serif;}
+  ::selection{background:var(--sky); color:#fff;}
+  a{color:inherit;}
+  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--sky-deep);}
+  h1,h2{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--ink);}
+
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:radial-gradient(rgba(31,46,56,0.03) 1px, transparent 1px);
+    background-size:5px 5px;
+    pointer-events:none; z-index:1;
+  }
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:rgba(234,243,248,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .nav-logo a{text-decoration:none;}
+  .nav-logo .back{opacity:0.5;}
+  .nav-links{display:flex; gap:28px; font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px;}
+  .nav-links a{text-decoration:none;}
+  @media(max-width:640px){.nav-links a:not(:last-child){display:none;}}
+
+  main{position:relative; z-index:2; max-width:760px; margin:0 auto; padding:150px 6vw 100px;}
+
+  .top{text-align:center; margin-bottom:56px;}
+  .top .eyebrow{margin-bottom:16px;}
+  .top h1{font-size:clamp(34px,5vw,48px);}
+  .top .contact{margin-top:14px; font-size:14px; color:var(--ink-soft);}
+  .top .contact a{text-decoration:underline; text-underline-offset:3px;}
+  .top .dl{margin-top:26px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px;
+    padding:14px 28px; background:var(--sky-deep); color:#fff; border-radius:40px; text-decoration:none; border:1px solid var(--sky-deep);
+    transition:all .25s ease;
+  }
+  .btn:hover{background:transparent; color:var(--sky-deep);}
+
+  section{margin-bottom:46px;}
+  section h2{font-size:15px; font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--sky-deep); border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:20px;}
+  section p{color:var(--ink-soft); font-size:15px; line-height:1.7;}
+
+  .entry{margin-bottom:22px;}
+  .entry:last-child{margin-bottom:0;}
+  .entry-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px;}
+  .entry-head h3{font-family:'Fraunces',serif; font-size:18px; font-weight:600; color:var(--ink);}
+  .entry-head .when{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft);}
+  .entry .org{font-size:13.5px; font-weight:700; color:var(--sky-deep); text-transform:uppercase; letter-spacing:0.03em; margin-top:2px;}
+  .entry ul{margin-top:10px; padding-left:20px; color:var(--ink-soft); font-size:14.5px; line-height:1.65;}
+  .entry ul li{margin-bottom:6px;}
+
+  .skills-grid{display:grid; grid-template-columns:160px 1fr; gap:10px 18px; font-size:14px;}
+  .skills-grid dt{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; font-size:12.5px; color:var(--ink); padding-top:2px;}
+  .skills-grid dd{color:var(--ink-soft); line-height:1.6;}
+  @media(max-width:560px){.skills-grid{grid-template-columns:1fr;} .skills-grid dt{margin-top:10px;}}
+
+  footer{padding:44px 6vw; text-align:center; border-top:1px solid var(--line); position:relative; z-index:2;}
+  footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft);}
+  footer a{text-decoration:underline; text-underline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="index.html">Bhavya Samhitha Mallineni</a><span class="back">/ Resume</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="work.html">Engineer</a>
+    <a href="balcony-ticket.html">The Balcony Ticket</a>
+  </div>
+</nav>
+
+<main>
+  <div class="top">
+    <div class="eyebrow">Resume</div>
+    <h1>Bhavya Samhitha Mallineni</h1>
+    <p class="contact">Austin, Texas · <a href="mailto:bhavyamallineni@gmail.com">bhavyamallineni@gmail.com</a> · <a href="https://www.linkedin.com/in/bhavya-samhitha-mallineni-a65aa81aa/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/BhavyaSamhithaMallineni" target="_blank" rel="noopener">GitHub</a></p>
+    <div class="dl"><a class="btn" href="Bhavya_Samhitha_Resume.pdf" target="_blank" rel="noopener">Download PDF →</a></div>
+  </div>
+
+  <section>
+    <h2>Objective</h2>
+    <p>Data Scientist with 3+ years of experience extracting insights from large scale datasets to support infrastructure and product decisions. Proficient in Python, SQL, and statistical methods, including A/B testing and causal inference, with hands on experience building dashboards, automated workflows, and cloud based data pipelines on GCP and Snowflake. Adept at partnering with engineering and product teams to formulate quantifiable business questions, define and evaluate key metrics, and deliver actionable insights through scalable data models and visualizations.</p>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="entry-head"><h3>MS, Electrical Engineering</h3><span class="when">Aug 2023 – May 2025</span></div>
+      <div class="org">University of Southern California · Los Angeles, CA</div>
+    </div>
+    <div class="entry">
+      <div class="entry-head"><h3>BE, Electronics and Communication</h3><span class="when">Jul 2017 – Jul 2021</span></div>
+      <div class="org">Osmania University · Hyderabad, Telangana</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <dl class="skills-grid">
+      <dt>Programming</dt><dd>Python, C++, SQL</dd>
+      <dt>Data Engineering</dt><dd>Apache Airflow, dbt, Snowflake, Teradata, BigQuery, Spark, Hadoop, ETL/ELT</dd>
+      <dt>Cloud & Platforms</dt><dd>GCP, AWS, Databricks, Kubernetes, Docker</dd>
+      <dt>Data Science & ML</dt><dd>Predictive Modeling, Feature Engineering, A/B Testing, Causal Inference, Time Series, PCA</dd>
+      <dt>ML Frameworks</dt><dd>TensorFlow, Scikit-learn, PyTorch, LightGBM, MLflow, LangChain, FastAPI, Hugging Face</dd>
+      <dt>Visualization</dt><dd>Power BI, Tableau, Mode, Streamlit, Domo, DAX, Plotly</dd>
+      <dt>Governance & Tools</dt><dd>Data architecture, schema design, data modeling, JIRA, Git, Agile</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+
+    <div class="entry">
+      <div class="entry-head"><h3>Data Analytics Engineer</h3><span class="when">Oct 2025 – Present</span></div>
+      <div class="org">FloSports · Austin, Texas</div>
+      <ul>
+        <li>Architected dbt models on Snowflake to standardize data marts and ETL/ELT workflows, reducing analytics delivery time by 20% and supporting revenue forecasting that drove ~12% growth.</li>
+        <li>Built governed Mode dashboards with real time KPI tracking, cutting ad hoc reporting requests by 40% and enabling self serve analytics for product and marketing teams.</li>
+        <li>Led methodology shift from Frequentist to Bayesian A/B testing, removing fixed sample size constraints and reducing experiment analysis time by 25%, delivering clearer results to business stakeholders.</li>
+        <li>Built a cash based experimentation framework by analyzing 20+ historical experiments, enabling revenue driven decision making that prioritized financial impact over granular engagement metrics.</li>
+        <li>Partnered with product and marketing to validate metrics and resolve pipeline discrepancies, maintaining 99%+ data accuracy across core reporting datasets.</li>
+        <li>Deployed Airflow pipelines to automate DSAR batch processing and monthly survey ingestion into Qualtrics, reducing batch runtime from 1 day to 2 hours and eliminating 36+ manual data pulls annually.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>Artificial Intelligence Engineer Intern</h3><span class="when">May 2024 – Aug 2024</span></div>
+      <div class="org">Radical X · New York, New York</div>
+      <ul>
+        <li>Built GenAI powered pipelines using Vertex AI, LangChain, and Streamlit with prompt engineering, automating a manual grading process and achieving 89.6% accuracy in production.</li>
+        <li>Optimized and Dockerized ML services on GCP, cutting inference latency by 20% at scale.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head"><h3>Analyst, Data Science Specialist</h3><span class="when">Sep 2021 – Jul 2023</span></div>
+      <div class="org">Deloitte USI Consulting · Hyderabad, Telangana</div>
+      <ul>
+        <li>Automated daily ETL validation pipelines for Walmart's SAP PR4 to S4/HANA billing migration across 5 pipeline stages, flagging and reprocessing only failed records and saving ~1,200 engineering hours over the project lifecycle.</li>
+        <li>Built automated validation scripts and documented transformation logic on Teradata, reducing QA turnaround by 27% and resolving cross system data inconsistencies.</li>
+        <li>Deployed OCR based eligibility models and MLOps pipelines on GCP and Teradata to automate medical insurance form qualification for an AstraZeneca program, enabling real time inference for 1,000+ users.</li>
+        <li>Designed and ran A/B testing and causal analysis frameworks to measure campaign effectiveness, improving targeting precision across 3 business units.</li>
+        <li>Integrated Flask APIs with analytics dashboards to surface ML model outputs for non technical stakeholders, reducing dependency on manual data pulls for business reporting.</li>
+        <li>Earned multiple Deloitte Performance Awards for automation innovation and predictive analytics impact across client engagements.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Extra-Curricular</h2>
+    <div class="entry">
+      <ul>
+        <li>Publish technical articles on Medium exploring the intersection of AI/ML and film, covering topics such as Vision Transformers, AI Agents, and computer vision applied to cinematography and shot classification.</li>
+        <li>Create and edit short form video content on Instagram and YouTube, blending storytelling and video editing to bring everyday narratives to life.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Leadership</h2>
+    <div class="entry">
+      <ul>
+        <li>Led the Deloitte AI Academy weekly newsletter, publishing practical guides on ML tools and their applications, driving upskilling and awareness on leveraging AI to improve business strategy and decision making.</li>
+        <li>Organized and led career guidance workshops for students as part of the Rotaract Club of Hyderabad, educating young learners on career pathways across multiple sessions.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Bhavya Samhitha Mallineni · Austin, TX · <a href="work.html">Back to Engineer →</a></p>
+</footer>
+
+</body>
+</html>
