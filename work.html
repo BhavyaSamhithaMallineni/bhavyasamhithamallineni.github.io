@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Bhavya Samhitha Mallineni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700&family=Big+Shoulders+Display:wght@600;700;800&family=Karla:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B140D;
+    --ink2:#241B13;
+    --cream:#FBF3E1;
+    --yellow:#F2B705;
+    --yellow-soft:#FBD35E;
+    --line:rgba(251,243,225,0.14);
+    --muted:rgba(251,243,225,0.65);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--ink); color:var(--cream); font-family:'Karla',sans-serif;}
+  ::selection{background:var(--yellow); color:var(--ink);}
+  a{color:inherit;}
+  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--yellow-soft);}
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--cream);}
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:rgba(27,20,13,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .nav-logo a{text-decoration:none;}
+  .nav-logo .back{opacity:0.5;}
+  .nav-links{display:flex; gap:28px; font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px;}
+  .nav-links a{text-decoration:none;}
+  @media(max-width:640px){.nav-links a:not(:last-child){display:none;}}
+
+  .hero{
+    min-height:56vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:150px 6vw 70px;
+  }
+  .hero .eyebrow{margin-bottom:18px;}
+  .hero h1{font-size:clamp(38px,6vw,64px);}
+  .hero p.sub{margin-top:20px; font-size:clamp(15px,1.7vw,18px); color:var(--muted); max-width:52ch; line-height:1.65;}
+
+  .section-head{max-width:640px; margin:0 auto 50px; text-align:center;}
+  .section-head p{margin-top:12px; color:var(--muted); font-size:15.5px; line-height:1.6;}
+
+  .timeline{max-width:840px; margin:60px auto 0; padding:0 6vw; border-top:1px solid var(--line);}
+  .role{display:grid; grid-template-columns:170px 1fr; gap:28px; padding:32px 0; border-bottom:1px solid var(--line);}
+  .role .when{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px; color:var(--yellow-soft); padding-top:4px;}
+  .role h3{font-size:22px; font-weight:600;}
+  .role .org{font-family:'Karla',sans-serif; font-weight:700; color:var(--muted); font-size:13.5px; letter-spacing:0.02em; margin-top:2px; text-transform:uppercase;}
+  .role p{margin-top:12px; color:var(--muted); font-size:15px; line-height:1.7; max-width:56ch;}
+  .role .stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .role .stack span{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:5px 10px; border:1px solid var(--line); border-radius:20px; color:var(--muted);}
+  @media(max-width:600px){.role{grid-template-columns:1fr; gap:8px;}}
+
+  .stats{
+    max-width:840px; margin:80px auto 0; padding:0 6vw;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .stat{border:1px solid var(--line); border-radius:14px; padding:28px 24px;}
+  .stat .num{font-family:'Fraunces',serif; font-size:34px; color:var(--yellow-soft); font-weight:600;}
+  .stat .lbl{margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.5;}
+  @media(max-width:640px){.stats{grid-template-columns:1fr;}}
+
+  .cta{text-align:center; padding:110px 6vw 100px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px;
+    padding:15px 30px; background:var(--yellow); color:var(--ink); border-radius:40px; text-decoration:none; border:1px solid var(--yellow);
+    transition:all .25s ease;
+  }
+  .btn:hover{background:transparent; color:var(--yellow);}
+  .btn.ghost{background:transparent; color:var(--cream); border-color:var(--line);}
+  .btn.ghost:hover{background:var(--cream); color:var(--ink);}
+  .cta-row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px;}
+
+  footer{padding:44px 6vw; text-align:center; border-top:1px solid var(--line);}
+  footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);}
+  footer a{text-decoration:underline; text-underline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="index.html">Bhavya Samhitha Mallineni</a><span class="back">/ Work</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="balcony-ticket.html">The Balcony Ticket</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Data Analytics Engineer · Austin, TX</div>
+  <h1>Work</h1>
+  <p class="sub">Analytics engineering, Bayesian experimentation, and ML-adjacent data pipelines. This is the craft I get paid for — built with the same care as everything else I make.</p>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="num">25%</div><div class="lbl">Faster decisions from a Bayesian A/B testing framework I built at FloSports</div></div>
+  <div class="stat"><div class="num">89.6%</div><div class="lbl">Accuracy on a GenAI grading system built at Radical X</div></div>
+  <div class="stat"><div class="num">2</div><div class="lbl">Enterprise clients led through ETL and ML work at Deloitte — Walmart and AstraZeneca</div></div>
+</div>
+
+<div class="timeline">
+  <div class="role">
+    <div class="when">2023 — Present</div>
+    <div>
+      <h3>Data Analytics Engineer</h3>
+      <div class="org">FloSports · Austin, TX</div>
+      <p>Built a Bayesian A/B testing framework that cut decision-making time by 25%, alongside analytics pipelines and ML-adjacent infrastructure powering product decisions.</p>
+      <div class="stack"><span>dbt</span><span>Snowflake</span><span>Python</span><span>Bayesian Stats</span><span>Mode</span></div>
+    </div>
+  </div>
+  <div class="role">
+    <div class="when">Earlier</div>
+    <div>
+      <h3>Consultant, Data & ML</h3>
+      <div class="org">Deloitte USI Consulting</div>
+      <p>Enterprise-scale ETL and client ML pipelines, including SAP migration work for Walmart and an OCR model for AstraZeneca.</p>
+      <div class="stack"><span>ETL</span><span>SAP</span><span>OCR / ML</span><span>Spark</span></div>
+    </div>
+  </div>
+  <div class="role">
+    <div class="when">Earlier</div>
+    <div>
+      <h3>AI / GenAI Engineer</h3>
+      <div class="org">Radical X</div>
+      <p>Built a GenAI grading system reaching 89.6% accuracy — early proof that language models could do genuinely useful, careful work.</p>
+      <div class="stack"><span>LangChain</span><span>GenAI</span><span>Python</span></div>
+    </div>
+  </div>
+  <div class="role">
+    <div class="when">Education</div>
+    <div>
+      <h3>MS, Electrical Engineering</h3>
+      <div class="org">University of Southern California</div>
+      <p>Deep learning, machine learning, statistical modeling, and image processing coursework — the technical backbone behind everything since.</p>
+      <div class="stack"><span>Deep Learning</span><span>Statistical Modeling</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <div class="cta-row">
+    <a class="btn" href="https://bhavyasamhithamallineni.github.io" target="_blank" rel="noopener">Full portfolio & resume →</a>
+    <a class="btn ghost" href="index.html">Back to home</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Bhavya Samhitha Mallineni · Austin, TX · <a href="balcony-ticket.html">The Balcony Ticket →</a></p>
+</footer>
+
+</body>
+</html>
