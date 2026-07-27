@@ -3,31 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Work — Bhavya Samhitha Mallineni</title>
+<title>Engineer · Bhavya Samhitha Mallineni</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700&family=Big+Shoulders+Display:wght@600;700;800&family=Karla:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1B140D;
-    --ink2:#241B13;
-    --cream:#FBF3E1;
-    --yellow:#F2B705;
-    --yellow-soft:#FBD35E;
-    --line:rgba(251,243,225,0.14);
-    --muted:rgba(251,243,225,0.65);
+    --paper:#EAF3F8;
+    --paper-warm:#DCEBF3;
+    --sky:#6FA8C9;
+    --sky-deep:#3D7695;
+    --sky-soft:#A9CEE0;
+    --ink:#1F2E38;
+    --ink-soft:#4A5F6E;
+    --line:rgba(31,46,56,0.14);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--ink); color:var(--cream); font-family:'Karla',sans-serif;}
-  ::selection{background:var(--yellow); color:var(--ink);}
+  body{background:var(--paper); color:var(--ink); font-family:'Karla',sans-serif;}
+  ::selection{background:var(--sky); color:#fff;}
   a{color:inherit;}
-  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--yellow-soft);}
-  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--cream);}
+  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--sky-deep);}
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--ink);}
+
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:radial-gradient(rgba(31,46,56,0.03) 1px, transparent 1px);
+    background-size:5px 5px;
+    pointer-events:none; z-index:1;
+  }
 
   nav{
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; align-items:center; justify-content:space-between;
     padding:18px 6vw;
-    background:rgba(27,20,13,0.88); backdrop-filter:blur(10px);
+    background:rgba(234,243,248,0.88); backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
   }
   .nav-logo{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
@@ -37,57 +46,81 @@
   .nav-links a{text-decoration:none;}
   @media(max-width:640px){.nav-links a:not(:last-child){display:none;}}
 
+  section, .timeline, .notebook, .cta{position:relative; z-index:2;}
+
   .hero{
-    min-height:56vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
-    padding:150px 6vw 70px;
+    min-height:52vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:150px 6vw 50px;
+    background:radial-gradient(ellipse 65% 55% at 50% 0%, rgba(111,168,201,0.20), transparent 70%);
   }
   .hero .eyebrow{margin-bottom:18px;}
   .hero h1{font-size:clamp(38px,6vw,64px);}
-  .hero p.sub{margin-top:20px; font-size:clamp(15px,1.7vw,18px); color:var(--muted); max-width:52ch; line-height:1.65;}
+  .hero p.sub{margin-top:20px; font-size:clamp(15px,1.7vw,18px); color:var(--ink-soft); max-width:52ch; line-height:1.65;}
 
-  .section-head{max-width:640px; margin:0 auto 50px; text-align:center;}
-  .section-head p{margin-top:12px; color:var(--muted); font-size:15.5px; line-height:1.6;}
+  .elsewhere{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+    padding:0 6vw 70px; position:relative; z-index:2;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; font-size:12.5px;
+    padding:10px 18px; border-radius:30px; border:1px solid var(--line);
+    background:var(--paper-warm); color:var(--ink-soft); text-decoration:none;
+    transition:all .2s ease;
+  }
+  .chip:hover{border-color:var(--sky-deep); color:var(--sky-deep); background:var(--sky-soft);}
 
-  .timeline{max-width:840px; margin:60px auto 0; padding:0 6vw; border-top:1px solid var(--line);}
+  .section-head{max-width:640px; margin:0 auto 50px; text-align:center; position:relative; z-index:2;}
+  .section-head p{margin-top:12px; color:var(--ink-soft); font-size:15.5px; line-height:1.6;}
+
+  .timeline{max-width:840px; margin:20px auto 0; padding:0 6vw; border-top:1px solid var(--line);}
   .role{display:grid; grid-template-columns:170px 1fr; gap:28px; padding:32px 0; border-bottom:1px solid var(--line);}
-  .role .when{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px; color:var(--yellow-soft); padding-top:4px;}
+  .role .when{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px; color:var(--sky-deep); padding-top:4px;}
   .role h3{font-size:22px; font-weight:600;}
-  .role .org{font-family:'Karla',sans-serif; font-weight:700; color:var(--muted); font-size:13.5px; letter-spacing:0.02em; margin-top:2px; text-transform:uppercase;}
-  .role p{margin-top:12px; color:var(--muted); font-size:15px; line-height:1.7; max-width:56ch;}
+  .role .org{font-family:'Karla',sans-serif; font-weight:700; color:var(--ink-soft); font-size:13.5px; letter-spacing:0.02em; margin-top:2px; text-transform:uppercase;}
+  .role p{margin-top:12px; color:var(--ink-soft); font-size:15px; line-height:1.7; max-width:56ch;}
   .role .stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
-  .role .stack span{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:5px 10px; border:1px solid var(--line); border-radius:20px; color:var(--muted);}
+  .role .stack span{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:5px 10px; border:1px solid var(--line); border-radius:20px; color:var(--ink-soft); background:var(--paper-warm);}
   @media(max-width:600px){.role{grid-template-columns:1fr; gap:8px;}}
 
-  .stats{
-    max-width:840px; margin:80px auto 0; padding:0 6vw;
-    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  .notebook{max-width:700px; margin:90px auto 0; padding:0 6vw;}
+  .notebook-head{margin-bottom:26px;}
+  .notebook-head .eyebrow{margin-bottom:8px;}
+  .notebook-head p{color:var(--ink-soft); font-size:14.5px; line-height:1.6; max-width:52ch;}
+  .log{border-top:1px solid var(--line);}
+  .log-item{
+    display:grid; grid-template-columns:90px 100px 1fr; gap:18px;
+    padding:16px 0; border-bottom:1px solid var(--line);
+    font-size:14px; align-items:baseline;
   }
-  .stat{border:1px solid var(--line); border-radius:14px; padding:28px 24px;}
-  .stat .num{font-family:'Fraunces',serif; font-size:34px; color:var(--yellow-soft); font-weight:600;}
-  .stat .lbl{margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.5;}
-  @media(max-width:640px){.stats{grid-template-columns:1fr;}}
+  .log-item .date{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-soft); opacity:0.7;}
+  .log-item .kind{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--sky-deep);}
+  .log-item .what{color:var(--ink-soft); line-height:1.55;}
+  @media(max-width:560px){
+    .log-item{grid-template-columns:1fr; gap:4px; padding:18px 0;}
+  }
 
   .cta{text-align:center; padding:110px 6vw 100px;}
   .btn{
     display:inline-flex; align-items:center; gap:10px;
     font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px;
-    padding:15px 30px; background:var(--yellow); color:var(--ink); border-radius:40px; text-decoration:none; border:1px solid var(--yellow);
+    padding:15px 30px; background:var(--sky-deep); color:#fff; border-radius:40px; text-decoration:none; border:1px solid var(--sky-deep);
     transition:all .25s ease;
   }
-  .btn:hover{background:transparent; color:var(--yellow);}
-  .btn.ghost{background:transparent; color:var(--cream); border-color:var(--line);}
-  .btn.ghost:hover{background:var(--cream); color:var(--ink);}
+  .btn:hover{background:transparent; color:var(--sky-deep);}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn.ghost:hover{background:var(--sky-deep); color:#fff; border-color:var(--sky-deep);}
   .cta-row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px;}
 
-  footer{padding:44px 6vw; text-align:center; border-top:1px solid var(--line);}
-  footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);}
+  footer{padding:44px 6vw; text-align:center; border-top:1px solid var(--line); position:relative; z-index:2;}
+  footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft);}
   footer a{text-decoration:underline; text-underline-offset:3px;}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo"><a href="index.html">Bhavya Samhitha Mallineni</a><span class="back">/ Work</span></div>
+  <div class="nav-logo"><a href="index.html">Bhavya Samhitha Mallineni</a><span class="back">/ Engineer</span></div>
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="balcony-ticket.html">The Balcony Ticket</a>
@@ -96,42 +129,38 @@
 
 <section class="hero">
   <div class="eyebrow">Data Analytics Engineer · Austin, TX</div>
-  <h1>Work</h1>
-  <p class="sub">Analytics engineering, Bayesian experimentation, and ML-adjacent data pipelines. This is the craft I get paid for — built with the same care as everything else I make.</p>
+  <h1>Engineer</h1>
+  <p class="sub">Analytics engineering, Bayesian experimentation, and ML adjacent data pipelines, the craft I've built through practice. Below: where I've applied it, and what I'm currently working through.</p>
 </section>
 
-<div class="stats">
-  <div class="stat"><div class="num">25%</div><div class="lbl">Faster decisions from a Bayesian A/B testing framework I built at FloSports</div></div>
-  <div class="stat"><div class="num">89.6%</div><div class="lbl">Accuracy on a GenAI grading system built at Radical X</div></div>
-  <div class="stat"><div class="num">2</div><div class="lbl">Enterprise clients led through ETL and ML work at Deloitte — Walmart and AstraZeneca</div></div>
+<div class="elsewhere">
+  <a class="chip" href="https://www.linkedin.com/in/bhavya-samhitha-mallineni-a65aa81aa/" target="_blank" rel="noopener">LinkedIn</a>
+  <a class="chip" href="https://huggingface.co/BhavyaSamhithaMallineni" target="_blank" rel="noopener">Hugging Face</a>
+  <a class="chip" href="https://medium.com/@bhavyamallineni" target="_blank" rel="noopener">Medium</a>
+  <a class="chip" href="https://bhavyasamhithamallineni.github.io" target="_blank" rel="noopener">Portfolio & Resume</a>
+</div>
+
+<div class="section-head" style="margin-top:0;">
+  <div class="eyebrow" style="display:flex; justify-content:center;">Where I've Applied It</div>
 </div>
 
 <div class="timeline">
   <div class="role">
-    <div class="when">2023 — Present</div>
+    <div class="when">2023 to Present</div>
     <div>
       <h3>Data Analytics Engineer</h3>
       <div class="org">FloSports · Austin, TX</div>
-      <p>Built a Bayesian A/B testing framework that cut decision-making time by 25%, alongside analytics pipelines and ML-adjacent infrastructure powering product decisions.</p>
-      <div class="stack"><span>dbt</span><span>Snowflake</span><span>Python</span><span>Bayesian Stats</span><span>Mode</span></div>
+      <p>Moved the team's experimentation from Frequentist to Bayesian A/B testing, changing how we reason about results and read them without waiting on fixed sample sizes. Architected dbt models on Snowflake to bring order to the data marts, and built governed Mode dashboards so product and marketing could self serve answers instead of filing a request. Also automated recurring data pulls with Airflow, the kind of unglamorous plumbing that quietly keeps everything else honest.</p>
+      <div class="stack"><span>dbt</span><span>Snowflake</span><span>Python</span><span>Bayesian Stats</span><span>Mode</span><span>Airflow</span></div>
     </div>
   </div>
   <div class="role">
-    <div class="when">Earlier</div>
+    <div class="when">2021 to 2023</div>
     <div>
-      <h3>Consultant, Data & ML</h3>
-      <div class="org">Deloitte USI Consulting</div>
-      <p>Enterprise-scale ETL and client ML pipelines, including SAP migration work for Walmart and an OCR model for AstraZeneca.</p>
-      <div class="stack"><span>ETL</span><span>SAP</span><span>OCR / ML</span><span>Spark</span></div>
-    </div>
-  </div>
-  <div class="role">
-    <div class="when">Earlier</div>
-    <div>
-      <h3>AI / GenAI Engineer</h3>
-      <div class="org">Radical X</div>
-      <p>Built a GenAI grading system reaching 89.6% accuracy — early proof that language models could do genuinely useful, careful work.</p>
-      <div class="stack"><span>LangChain</span><span>GenAI</span><span>Python</span></div>
+      <h3>Analyst, Data Science Specialist</h3>
+      <div class="org">Deloitte USI Consulting · Hyderabad</div>
+      <p>Built automated ETL validation pipelines for a large scale SAP billing migration, designed so only the records that actually failed got reprocessed instead of the whole batch. Deployed OCR based eligibility models and MLOps pipelines for a healthcare client's insurance form processing, and ran A/B testing and causal analysis to help a marketing team understand what was actually working. Somewhere in there I also learned that a well documented validation script saves everyone a very bad afternoon later.</p>
+      <div class="stack"><span>ETL</span><span>SAP</span><span>Teradata</span><span>OCR / ML</span><span>Causal Inference</span></div>
     </div>
   </div>
   <div class="role">
@@ -139,9 +168,22 @@
     <div>
       <h3>MS, Electrical Engineering</h3>
       <div class="org">University of Southern California</div>
-      <p>Deep learning, machine learning, statistical modeling, and image processing coursework — the technical backbone behind everything since.</p>
+      <p>Deep learning, machine learning, statistical modeling, and image processing, the coursework that gave the rest of this its technical spine.</p>
       <div class="stack"><span>Deep Learning</span><span>Statistical Modeling</span></div>
     </div>
+  </div>
+</div>
+
+<div class="notebook">
+  <div class="notebook-head">
+    <div class="eyebrow">Notebook</div>
+    <p>A running, unpolished list of what I'm reading, building, or stuck on. Kept mostly for myself, posted here so it exists somewhere outside my head.</p>
+  </div>
+  <div class="log">
+    <div class="log-item"><div class="date">Jul 2026</div><div class="kind">Building</div><div class="what">An agentic job search pipeline in Python, pulling listings across a few sources and using a local model to tailor resumes.</div></div>
+    <div class="log-item"><div class="date">Jul 2026</div><div class="kind">Studying</div><div class="what">Working through a self built roadmap from RNNs through attention, transformers, and agents.</div></div>
+    <div class="log-item"><div class="date">Jun 2026</div><div class="kind">Reading</div><div class="what">Lilian Weng's overview of agents, alongside Sebastian Raschka's writing on how LLMs actually work under the hood.</div></div>
+    <div class="log-item"><div class="date">Ongoing</div><div class="kind">Writing</div><div class="what">Technical essays on where AI and ML overlap with film: vision transformers, shot classification, that kind of thing.</div></div>
   </div>
 </div>
 

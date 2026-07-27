@@ -3,43 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Balcony Ticket — Bhavya Samhitha Mallineni</title>
+<title>The Balcony Ticket · Bhavya Samhitha Mallineni</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Big+Shoulders+Display:wght@600;700;800&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#FBF3E1;
-    --cream-warm:#F5E6C0;
-    --yellow:#F2B705;
-    --yellow-soft:#FBD35E;
-    --mustard:#D9A62D;
-    --mustard-deep:#8C6412;
-    --rust:#B8452B;
-    --ink:#241B13;
-    --ink-soft:#4A3A26;
-    --ink-line:rgba(36,27,19,0.14);
+    --paper:#EAF3F8;
+    --paper-warm:#DCEBF3;
+    --sky:#6FA8C9;
+    --sky-deep:#3D7695;
+    --sky-soft:#A9CEE0;
+    --ink:#1F2E38;
+    --ink-soft:#4A5F6E;
+    --line:rgba(31,46,56,0.14);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{background:var(--cream); color:var(--ink); font-family:'Karla',sans-serif; overflow-x:hidden;}
-  ::selection{background:var(--yellow); color:var(--ink);}
+  body{background:var(--paper); color:var(--ink); font-family:'Karla',sans-serif; overflow-x:hidden;}
+  ::selection{background:var(--sky); color:#fff;}
   a{color:inherit;}
   body::before{
     content:'';
     position:fixed; inset:0;
-    background-image:radial-gradient(rgba(36,27,19,0.035) 1px, transparent 1px);
+    background-image:radial-gradient(rgba(31,46,56,0.03) 1px, transparent 1px);
     background-size:5px 5px;
     pointer-events:none; z-index:1;
   }
-  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--rust);}
+  .eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--sky-deep);}
   h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--ink);}
 
   nav{
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; align-items:center; justify-content:space-between;
     padding:18px 6vw;
-    background:rgba(251,243,225,0.86); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--ink-line);
+    background:rgba(234,243,248,0.86); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
   }
   .nav-logo{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
   .nav-logo a{text-decoration:none;}
@@ -51,11 +49,11 @@
   section{position:relative; z-index:2;}
 
   .hero{
-    min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:150px 6vw 80px;
+    min-height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:150px 6vw 70px;
     background:
-      radial-gradient(ellipse 65% 55% at 50% 0%, rgba(242,183,5,0.32), transparent 70%),
-      var(--cream);
+      radial-gradient(ellipse 65% 55% at 50% 0%, rgba(111,168,201,0.24), transparent 70%),
+      var(--paper);
   }
   .hero .eyebrow{margin-bottom:20px;}
   .hero h1{font-size:clamp(42px,7.5vw,88px); max-width:14ch;}
@@ -69,63 +67,36 @@
 
   .format-card{
     max-width:820px; margin:0 auto 70px;
-    background:var(--cream-warm); border:1px solid var(--ink-line); border-radius:16px;
+    background:var(--paper-warm); border:1px solid var(--line); border-radius:16px;
     padding:40px clamp(24px,5vw,52px); position:relative;
   }
   .format-card::before{
     content:'ADMIT ONE'; position:absolute; top:20px; right:24px;
     font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.16em; font-weight:700;
-    color:var(--mustard-deep); opacity:0.5;
+    color:var(--sky-deep); opacity:0.5;
   }
   .format-card .eyebrow{margin-bottom:10px;}
   .format-card .beat{font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:clamp(20px,2.6vw,26px); line-height:1.5;}
-  .format-card .beat span{color:var(--rust); font-style:normal; font-weight:600;}
+  .format-card .beat span{color:var(--sky-deep); font-style:normal; font-weight:600;}
   .format-card p.desc{margin-top:20px; color:var(--ink-soft); font-size:15.5px; line-height:1.7;}
 
-  .reel-row{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:8px;}
-  .reel-card{
-    background:var(--ink); border-radius:14px; aspect-ratio:9/13; position:relative; overflow:hidden;
-    display:flex; flex-direction:column; justify-content:flex-end; padding:20px; color:var(--cream);
-    text-decoration:none; transition:transform .35s ease;
+  .insta-wrap{
+    max-width:540px; margin:0 auto; display:flex; justify-content:center;
+    border-radius:16px; overflow:hidden;
   }
-  .reel-card:hover{transform:translateY(-6px);}
-  .reel-card .glow{position:absolute; inset:0; background:radial-gradient(circle at 30% 20%, rgba(242,183,5,0.5), transparent 60%);}
-  .reel-card .tag{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--yellow-soft); position:relative;}
-  .reel-card .ttl{font-family:'Fraunces',serif; font-weight:600; font-size:19px; margin-top:8px; position:relative; line-height:1.25;}
-  .reel-card .play{position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:rgba(251,243,225,0.14); border:1px solid rgba(251,243,225,0.35); display:flex; align-items:center; justify-content:center;}
-  .reel-card .play svg{width:12px; height:12px;}
-  @media(max-width:760px){.reel-row{grid-template-columns:1fr 1fr;}}
-  @media(max-width:480px){.reel-row{grid-template-columns:1fr;}}
 
-  .balcony-cta{text-align:center; margin-top:48px;}
+  .balcony-cta{text-align:center; margin-top:48px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
   .btn{
     display:inline-flex; align-items:center; gap:10px;
     font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px;
-    padding:15px 30px; background:var(--rust); color:var(--cream); border-radius:40px; text-decoration:none; border:1px solid var(--rust);
+    padding:15px 30px; background:var(--sky-deep); color:#fff; border-radius:40px; text-decoration:none; border:1px solid var(--sky-deep);
     transition:all .25s ease;
   }
-  .btn:hover{background:transparent; color:var(--rust);}
-  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--ink-line);}
-  .btn.ghost:hover{background:var(--ink); color:var(--cream); border-color:var(--ink);}
+  .btn:hover{background:transparent; color:var(--sky-deep);}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn.ghost:hover{background:var(--sky-deep); color:#fff; border-color:var(--sky-deep);}
 
-  .book{
-    padding:100px 6vw 120px; text-align:center;
-    background:radial-gradient(ellipse 70% 60% at 50% 100%, rgba(242,183,5,0.22), transparent 70%), var(--cream-warm);
-  }
-  .book-inner{max-width:680px; margin:0 auto;}
-  .book .eyebrow{display:flex; justify-content:center;}
-  .book h2{font-size:clamp(32px,4.6vw,52px); margin-top:16px;}
-  .book h2 em{font-style:italic; color:var(--rust); font-weight:500;}
-  .book p{margin-top:18px; color:var(--ink-soft); font-size:16.5px; line-height:1.7;}
-
-  .signup{margin-top:42px; display:flex; max-width:420px; margin-left:auto; margin-right:auto; border:1.5px solid var(--ink); border-radius:40px; overflow:hidden; background:var(--cream);}
-  .signup input{flex:1; border:none; background:transparent; padding:16px 20px; font-family:'Karla',sans-serif; font-size:14.5px; color:var(--ink); outline:none;}
-  .signup input::placeholder{color:var(--ink-soft); opacity:0.6;}
-  .signup button{border:none; background:var(--ink); color:var(--cream); font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px; padding:0 26px; cursor:pointer; transition:background .25s ease;}
-  .signup button:hover{background:var(--rust);}
-  .form-note{margin-top:14px; font-size:12.5px; color:var(--ink-soft); opacity:0.7;}
-
-  footer{padding:50px 6vw; text-align:center; border-top:1px solid var(--ink-line);}
+  footer{padding:50px 6vw; text-align:center; border-top:1px solid var(--line);}
   footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft);}
   footer a{text-decoration:underline; text-underline-offset:3px;}
 </style>
@@ -136,67 +107,41 @@
   <div class="nav-logo"><a href="index.html">Bhavya Samhitha Mallineni</a><span class="back">/ The Balcony Ticket</span></div>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="work.html">Work</a>
+    <a href="work.html">Engineer</a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="eyebrow">The Passion Project</div>
   <h1>The Balcony Ticket</h1>
-  <p class="sub">A running series of feel-good stories, filmed wherever I happen to be — usually my balcony. I say I'm bored, I show you whatever I'm doing, and somewhere in the middle, I end up telling you a story from my life.</p>
+  <p class="sub">A running series of feel good stories, filmed wherever I happen to be, usually my balcony. I say I'm bored, I show you whatever I'm doing, and somewhere in the middle, I end up telling you a story from my life.</p>
 </section>
 
 <section class="balcony">
   <div class="format-card">
     <div class="eyebrow">How an episode actually goes</div>
-    <p class="beat">"I'm <span>bored</span>, so I'm doing <span>this</span>." Somewhere in the middle of doing it — a memory surfaces. By the end, you've watched me make tea, or reorganize a shelf, or just sit outside — and you've also heard a real story: about growing up, about people I've known, about the small feel-good moment that stuck.</p>
-    <p class="desc">No script, no production crew — just an ordinary moment used as a doorway into something true. It's the opposite of a highlight reel, which is exactly the point.</p>
+    <p class="beat">"I'm <span>bored</span>, so I'm doing <span>this</span>." Somewhere in the middle of doing it, a memory surfaces. By the end, you've watched me make tea, or reorganize a shelf, or just sit outside, and you've also heard a real story: about growing up, about people I've known, about the small feel good moment that stuck.</p>
+    <p class="desc">No script, no production crew, just an ordinary moment used as a doorway into something true. It's the opposite of a highlight reel, which is exactly the point.</p>
   </div>
 
   <div class="section-head">
-    <div class="eyebrow" style="justify-content:center; display:flex;">Episodes</div>
+    <div class="eyebrow" style="justify-content:center; display:flex;">From Instagram</div>
     <h2>Watch along</h2>
   </div>
 
-  <div class="reel-row">
-    <a class="reel-card" href="https://www.instagram.com/p/DYa2c8lOXFs/" target="_blank" rel="noopener">
-      <div class="glow"></div>
-      <div class="play"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4l14 8-14 8V4z" fill="#FBF3E1"/></svg></div>
-      <div class="tag">Watch on Instagram</div>
-      <div class="ttl">The first episode — where it all started</div>
-    </a>
-    <div class="reel-card" style="justify-content:center; align-items:center; text-align:center;">
-      <div class="glow"></div>
-      <div class="tag" style="position:relative;">Coming soon</div>
-      <div class="ttl" style="position:relative; opacity:0.85;">Episode 2, filming this month</div>
-    </div>
-    <div class="reel-card" style="justify-content:center; align-items:center; text-align:center;">
-      <div class="glow"></div>
-      <div class="tag" style="position:relative;">Coming soon</div>
-      <div class="ttl" style="position:relative; opacity:0.85;">More balcony evenings ahead</div>
-    </div>
+  <div class="insta-wrap">
+    <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DYa2c8lOXFs/" data-instgrm-version="14" style="background:#FFF; border:1px solid var(--line); border-radius:16px; margin:0; max-width:540px; width:100%;"></blockquote>
   </div>
+  <script async src="//www.instagram.com/embed.js"></script>
 
   <div class="balcony-cta">
-    <a class="btn" href="https://www.instagram.com/p/DYa2c8lOXFs/" target="_blank" rel="noopener">Follow the series →</a>
-  </div>
-</section>
-
-<section class="book">
-  <div class="book-inner">
-    <div class="eyebrow">Now Showing In Two Years</div>
-    <h2>There's a <em>book</em> coming.</h2>
-    <p>Every episode, every ordinary-moment-turned-story, is practice for something longer. I'm writing toward a book — and I'd rather you already know my name before it's on a shelf than meet me for the first time on the cover.</p>
-    <form class="signup" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\'re In'; this.querySelector('input').value='Thank you!';">
-      <input type="email" placeholder="Your email — for the balcony updates" required>
-      <button type="submit">Get on the list</button>
-    </form>
-    <div class="form-note">One email whenever there's a new episode, or real news about the book. Nothing else.</div>
+    <a class="btn" href="https://www.instagram.com/the_balcony_ticket" target="_blank" rel="noopener">Follow on Instagram →</a>
+    <a class="btn ghost" href="https://www.youtube.com/@BhavyaSamhitha" target="_blank" rel="noopener">Watch on YouTube →</a>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 Bhavya Samhitha Mallineni · Austin, TX · <a href="index.html">Back home</a></p>
+  <p>© 2026 Bhavya Samhitha Mallineni · Austin, TX · <a href="https://www.instagram.com/the_balcony_ticket" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.youtube.com/@BhavyaSamhitha" target="_blank" rel="noopener">YouTube</a> · <a href="index.html">Back home</a></p>
 </footer>
 
 </body>
