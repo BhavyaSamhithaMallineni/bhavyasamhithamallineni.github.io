@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idempotent Data Pipelines · Bhavya Samhitha Mallineni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700&family=Big+Shoulders+Display:wght@600;700;800&family=Karla:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+:root{
+--paper:#EAF3F8;
+--paper-warm:#DCEBF3;
+--sky:#6FA8C9;
+--sky-deep:#3D7695;
+--sky-soft:#A9CEE0;
+--ink:#1F2E38;
+--ink-soft:#4A5F6E;
+--line:rgba(31,46,56,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--paper); color:var(--ink); font-family:'Karla',sans-serif;}
+::selection{background:var(--sky); color:#fff;}
+a{color:inherit;}
+.eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:13px; color:var(--sky-deep);}
+h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; line-height:1.05; color:var(--ink);}
+body::before{
+content:'';
+position:fixed; inset:0;
+background-image:radial-gradient(rgba(31,46,56,0.03) 1px, transparent 1px);
+background-size:5px 5px;
+pointer-events:none; z-index:1;
+}
+nav{
+position:fixed; top:0; left:0; right:0; z-index:100;
+display:flex; align-items:center; justify-content:space-between;
+padding:18px 6vw;
+background:rgba(234,243,248,0.88); backdrop-filter:blur(10px);
+border-bottom:1px solid var(--line);
+}
+.nav-logo{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+.nav-logo a{text-decoration:none;}
+.nav-logo .back{opacity:0.5;}
+.nav-links{display:flex; gap:28px; font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:13px;}
+.nav-links a{text-decoration:none;}
+@media(max-width:640px){.nav-links a:not(:last-child){display:none;}}
+section, article, .cta{position:relative; z-index:2;}
+.post-hero{
+padding:150px 6vw 40px; max-width:720px; margin:0 auto;
+}
+.back-link{
+display:inline-flex; align-items:center; gap:6px;
+font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:12px;
+color:var(--sky-deep); text-decoration:none; margin-bottom:26px;
+}
+.post-meta{display:flex; gap:14px; align-items:center; margin-bottom:18px; flex-wrap:wrap;}
+.post-date{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:12.5px; color:var(--sky-deep);}
+.post-tag{font-family:'Big Shoulders Display',sans-serif; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border:1px solid var(--line); border-radius:20px; color:var(--ink-soft); background:var(--paper-warm);}
+.post-hero h1{font-size:clamp(32px,5vw,50px);}
+.post-hero p.dek{margin-top:18px; font-size:clamp(15px,1.6vw,17px); color:var(--ink-soft); line-height:1.65; max-width:60ch;}
+article{max-width:720px; margin:0 auto; padding:20px 6vw 80px;}
+.post-body{color:var(--ink-soft); font-size:16px; line-height:1.8; max-width:66ch;}
+.post-body p{margin-bottom:20px;}
+.post-body h2{font-size:22px; color:var(--ink); margin:36px 0 14px; font-weight:600;}
+.post-body ul{margin:0 0 20px 22px;}
+.post-body li{margin-bottom:8px;}
+.post-body strong{color:var(--ink); font-weight:700;}
+.post-body code{font-family:monospace; background:var(--paper-warm); padding:2px 6px; border-radius:4px; font-size:14.5px;}
+.cta{text-align:center; padding:20px 6vw 100px;}
+.btn{
+display:inline-flex; align-items:center; gap:10px;
+font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px;
+padding:15px 30px; background:var(--sky-deep); color:#fff; border-radius:40px; text-decoration:none; border:1px solid var(--sky-deep);
+transition:all .25s ease;
+}
+.btn:hover{background:transparent; color:var(--sky-deep);}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+.btn.ghost:hover{background:var(--sky-deep); color:#fff; border-color:var(--sky-deep);}
+.cta-row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px;}
+footer{padding:44px 6vw; text-align:center; border-top:1px solid var(--line); position:relative; z-index:2;}
+footer p{font-family:'Big Shoulders Display',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft);}
+footer a{text-decoration:underline; text-underline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-logo"><a href="../index.html">Bhavya Samhitha Mallineni</a><span class="back">/ Learn With Me</span></div>
+<div class="nav-links">
+<a href="../index.html">Home</a>
+<a href="../work.html">Engineer</a>
+<a href="../balcony-ticket.html">The Balcony Ticket</a>
+</div>
+</nav>
+
+<div class="post-hero">
+<a class="back-link" href="../learn-with-me.html">← Back to Learn With Me</a>
+<div class="post-meta">
+<span class="post-date">Sep 3, 2026</span>
+<span class="post-tag">Data Engineering</span>
+<span class="post-tag">dbt</span>
+</div>
+<h1>Idempotent Data Pipelines</h1>
+<p class="dek">A scheduler hiccups, a task silently reruns, or someone kicks off a backfill on data that was already processed. Suddenly a table that should show one number shows double. Here is how I think about the fix, with a Netflix style example to make it concrete, and a small local project I built to prove it to myself.</p>
+</div>
+
+<article>
+<div class="post-body">
+<p>If you have worked in data engineering for more than a week, you have probably seen this happen. That is the exact problem idempotence solves.</p>
+
+<h2>What Idempotence Actually Means</h2>
+<p>An operation is idempotent if running it once or running it five times leaves you with the same result. In data engineering terms, if my pipeline runs multiple times with the same input, whether because of a scheduler misconfiguration, a zombie task that is technically dead but still writing in the background, or an intentional backfill, I should still get a consistent, correct output.</p>
+<p>Why this matters in practice:</p>
+<ul>
+<li>Rerunning a load should not duplicate data</li>
+<li>A failed job should be safely retryable, not manually cleaned up</li>
+<li>Backfills should not introduce side effects you did not intend</li>
+<li>Unique constraints should never get compromised by a rerun</li>
+</ul>
+
+<h2>The Two Patterns That Get You There</h2>
+<p><strong>Delete and write.</strong> Before loading new data for a given slice, usually a date, you delete whatever already exists for that slice, then insert the freshly computed data. Run it once or run it ten times, you land in the same place. This works well when the upstream source itself can change retroactively, since you are always doing a full, clean replace rather than reconciling old and new rows.</p>
+<p><strong>Merge, also called upsert.</strong> Instead of wiping and reloading, you match incoming rows against a unique key already in the target table. If the key exists, you skip it. If it does not, you insert it. This is the better choice when the source is trustworthy and effectively immutable once written, like a staging table fed by completed transactions.</p>
+<p>One detail that trips people up: the merge pattern does not need to wait for tomorrow to fill in a failed load. If a job dies halfway through, you can rerun the exact same job right away. The rows that already landed get skipped because their key already exists, and only the missing rows get inserted. Same run, same date, no waiting.</p>
+<p>The other detail worth remembering is to always parameterize by something explicit like a date, never by <code>CURRENT_DATE</code> or today. If your job's identity depends on when it happens to run rather than what it was asked to process, you have already broken idempotence before you even get to delete or merge logic.</p>
+
+<h2>Making It Concrete: A Netflix Style Example</h2>
+<p>To make this tangible, I walked through how a company like Netflix might apply this to viewing events. Worth being upfront that this is an illustrative scenario, not a claim about Netflix's actual internal stack.</p>
+<p>Picture a daily job that computes total watch hours per title. Every play, pause, or skip fires a raw event that lands in a staging table. From there, a daily aggregate table gets built for dashboards.</p>
+<p>Two idempotence problems show up immediately. If the scheduler double triggers the job for a given day, a title's watch hours should not double count. If a backfill reprocesses two weeks of history because of a bug fix, it should not stack a second copy of those numbers on top of the first.</p>
+<p>The fix maps directly onto the two patterns above, applied by layer:</p>
+<ul>
+<li><strong>Staging layer</strong> (raw, near immutable events): merge and upsert on a unique event id. Since a completed playback event will not retroactively change, you only ever insert what is missing.</li>
+<li><strong>Mart layer</strong> (the daily aggregate table used by dashboards): delete and write, scoped tightly to the date being reprocessed. This is an aggregate, so a clean replace makes more sense than trying to reconcile individual rows.</li>
+</ul>
+<p>If this were built in dbt on top of a warehouse like Snowflake, this maps almost exactly onto dbt's <code>incremental</code> materialization. Staging models typically use the <code>merge</code> strategy keyed on a unique id, and mart models typically use <code>delete+insert</code> keyed on the date being reprocessed.</p>
+
+<h2>Proving It To Myself Locally</h2>
+<p>Reading about idempotence is one thing. Watching a table actually double, then watching that stop happening, is another.</p>
+<p>I built a small project using nothing but Python's standard library and SQLite, so it runs anywhere with zero setup. It has three pieces: a script that generates a day of fake viewing events into a CSV, a naive pipeline that blindly inserts into a staging table and an aggregate table, and a fixed pipeline that applies merge and upsert to staging, and delete and write to the aggregate table.</p>
+<p>Running the naive version twice for the same date is all it takes to see the problem. Raw event counts double. The aggregate table ends up with two rows per title, one of them exactly twice the correct value.</p>
+<p>Running the fixed version three, four, five times in a row for the same date changes nothing. Row counts hold steady. Totals hold steady. That is idempotence, not as a definition, but as something you can actually watch happen on your own machine.</p>
+
+<h2>The Takeaway</h2>
+<p>Idempotence is not a fancy concept. It is really just answering one question honestly: if this job runs twice by accident, what happens? If the answer is anything other than nothing changes, that is the bug idempotence is there to fix, and delete and write or merge and upsert are almost always the two tools that get you there.</p>
+</div>
+</article>
+
+<div class="cta">
+<div class="cta-row">
+<a class="btn" href="../learn-with-me.html">← More posts</a>
+<a class="btn ghost" href="../work.html">Back to Engineer</a>
+</div>
+</div>
+
+<footer>
+<p>© 2026 Bhavya Samhitha Mallineni · Austin, TX · <a href="../work.html">Engineer →</a></p>
+</footer>
+
+</body>
+</html>
