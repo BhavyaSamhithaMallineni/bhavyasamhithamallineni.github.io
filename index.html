@@ -93,18 +93,20 @@
   .doors-head h2{font-size:clamp(26px,3.4vw,38px); margin-top:12px;}
   .doors-head p{margin-top:14px; color:var(--ink-soft); font-size:16px; line-height:1.6;}
 
+  /* CHANGED: was "grid-template-columns:1fr 1fr;" for two doors, now three across on wide screens */
   .door-grid{
-    display:grid; grid-template-columns:1fr 1fr; gap:64px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:44px;
   }
-  @media(max-width:800px){ .door-grid{grid-template-columns:1fr; gap:36px;} }
+  @media(max-width:980px){ .door-grid{grid-template-columns:1fr 1fr; gap:36px;} }
+  @media(max-width:640px){ .door-grid{grid-template-columns:1fr; gap:28px;} }
 
   .door{
     display:block; text-decoration:none; color:var(--ink);
     border-radius:20px;
-    padding:48px 38px;
+    padding:44px 34px;
     position:relative;
     overflow:hidden;
-    min-height:320px;
+    min-height:300px;
     display:flex; flex-direction:column; justify-content:flex-end;
     transition:transform .35s ease, box-shadow .35s ease;
   }
@@ -117,8 +119,13 @@
     background:linear-gradient(155deg, #F0F7FB, var(--sky-soft) 90%);
     box-shadow:0 20px 50px -22px rgba(61,118,149,0.35);
   }
+  /* NEW: third door variant, learn with me */
+  .door.learn{
+    background:linear-gradient(155deg, #EAF3F8, var(--sky-soft) 90%);
+    box-shadow:0 20px 50px -22px rgba(111,168,201,0.4);
+  }
   .door-eyebrow{font-family:'Big Shoulders Display',sans-serif; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; font-size:12px; color:var(--sky-deep); opacity:0.8;}
-  .door h3{font-size:clamp(28px,3vw,36px); margin-top:10px;}
+  .door h3{font-size:clamp(26px,2.6vw,32px); margin-top:10px;}
   .door p{margin-top:14px; font-size:15px; line-height:1.6; max-width:34ch; color:var(--ink-soft);}
   .door-arrow{
     margin-top:26px; font-family:'Big Shoulders Display',sans-serif; font-weight:700;
@@ -145,6 +152,8 @@
   <div class="nav-logo"><span class="dot"></span>Bhavya Samhitha Mallineni</div>
   <div class="nav-links">
     <a href="work.html">Engineer</a>
+    <!-- NEW -->
+    <a href="learn-with-me.html">Learn With Me</a>
     <a href="balcony-ticket.html">The Balcony Ticket</a>
   </div>
 </nav>
@@ -161,15 +170,24 @@
 
 <section class="doors">
   <div class="doors-head">
-    <div class="eyebrow" style="justify-content:center; display:flex;">Two Doors</div>
+    <!-- CHANGED: "Two Doors" to "Three Doors", and the paragraph now covers all three -->
+    <div class="eyebrow" style="justify-content:center; display:flex;">Three Doors</div>
     <h2>Pick where you want to start.</h2>
-    <p>These live apart on purpose. One is the craft I've built through practice. The other is the one I've kept since childhood.</p>
+    <p>These live apart on purpose. One is the craft I've built through practice, one is where I write down what I am learning as I go, and the last is the one I've kept since childhood.</p>
   </div>
   <div class="door-grid">
     <a class="door work" href="work.html">
       <span class="door-mark">est. career</span>
       <h3>Engineer</h3>
       <p>Analytics engineering, ML pipelines, and experimentation systems.</p>
+      <div class="door-arrow">Step in <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </a>
+    <!-- NEW: third door -->
+    <a class="door learn" href="learn-with-me.html">
+      <span class="door-mark">est. today</span>
+      <div class="door-eyebrow">The Notebook</div>
+      <h3>Learn With Me</h3>
+      <p>Short write ups on whatever I am working through that week.</p>
       <div class="door-arrow">Step in <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </a>
     <a class="door story" href="balcony-ticket.html">
