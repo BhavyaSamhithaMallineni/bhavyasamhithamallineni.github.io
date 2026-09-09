@@ -151,12 +151,12 @@
   <p>Most data quality tools are good at one thing: finding what is wrong. They are much worse at the second half of the job, telling a person what that means and what to do about it. I wanted to know if an AI explanation layer sitting right after detection actually closes that gap, or if it is just a nicer looking version of the same raw output. So I built a small pipeline to test it on myself, honestly, with a real measurement at the end instead of a guess.</p>
 
   <h2>Starting with data I could trust, because I broke it on purpose</h2>
-  <p>The project starts with a synthetic e-commerce star schema: customers, products, dates, and a fact table of five thousand order line items. I generated all of it myself with a fixed random seed, and I planted three specific problems inside it: fifty orders with no customer attached, twenty five orders pointing to a customer that does not exist, and twenty five orders with an impossible quantity of five thousand units.</p>
+  <p>The project starts with a synthetic e commerce star schema: customers, products, dates, and a fact table of five thousand order line items. I generated all of it myself with a fixed random seed, and I planted three specific problems inside it: fifty orders with no customer attached, twenty five orders pointing to a customer that does not exist, and twenty five orders with an impossible quantity of five thousand units.</p>
   <p>Planting the bugs myself mattered. It meant I always knew the right answer, which is the only way to check whether a detection tool, or an AI explanation of that tool, is actually correct rather than just plausible sounding.</p>
 
   <h2>Detection: Great Expectations reading the data, not guessing at it</h2>
   <p>I built the schema properly with dbt, joining a raw fact table to its dimensions with left joins specifically so the broken rows would survive the join instead of quietly disappearing. Then I pointed Great Expectations, a data validation framework, at the finished table with five plain rules, things like every order needs a customer, and quantity should fall in a sane range.</p>
-  <p>It found exactly what I had planted. Fifty missing customers, twenty-five orphaned ones, twenty-five bad quantities, and it correctly left two other checks passing, confirming it was not just failing everything by default.</p>
+  <p>It found exactly what I had planted. Fifty missing customers, twenty five orphaned ones, twenty five bad quantities, and it correctly left two other checks passing, confirming it was not just failing everything by default.</p>
 
   <div class="callout">
     Somewhere in here I found a genuine bug in my own bug detector: an older version of the validation library returned its pass or fail result as a numpy boolean instead of a plain one, which silently turned into the text string False when written to a file, a string that Python treats as true. A real failure was quietly being counted as a pass. Fixing it meant explicitly casting the value before saving it, and it is the kind of small, easy to miss thing that makes me trust a pipeline more once I have actually hunted one down inside it.
@@ -167,7 +167,7 @@
   <p>That last part, the description, turned out to matter more than I expected. Without it, the model only knows a column failed a rule. With it, an explanation reads like something a colleague who actually looked at the data would write, not a reworded error message.</p>
 
   <h2>The part most people skip: actually measuring it</h2>
-  <p>It is easy to assume plain English explanations help. I wanted a real number, even a small one, rather than a confident-sounding guess. So I timed myself, honestly, reading each of the three real failures two ways: once as raw JSON, once as Claude's explanation, typing a one line diagnosis each time and letting the clock run.</p>
+  <p>It is easy to assume plain English explanations help. I wanted a real number, even a small one, rather than a confident sounding guess. So I timed myself, honestly, reading each of the three real failures two ways: once as raw JSON, once as Claude's explanation, typing a one line diagnosis each time and letting the clock run.</p>
 
   <table>
     <tr><th>Failure</th><th>Raw JSON</th><th>Explanation</th><th>Change</th></tr>
@@ -177,12 +177,12 @@
   </table>
 
   <p>Two of three improved a lot, especially the quantity check, which needed the most manual reasoning to work out from raw numbers alone. But one check came out slower with the explanation, and I am not going to smooth that over. It was likely the first item shown in that round, which probably added a few seconds of simply getting oriented again, independent of the format. With a sample size of one person and one trial, that is a real limitation, not something a bigger average should be allowed to hide.</p>
-  <p>Averaged out, diagnosis time dropped by fifty-three percent. I trust that number more because I am also showing you the one case where it did not hold.</p>
+  <p>Averaged out, diagnosis time dropped by fifty three percent. I trust that number more because I am also showing you the one case where it did not hold.</p>
 
   <h2>What actually building this taught me</h2>
   <ul>
     <li>Dimensional modeling and transformation as code with dbt, on a schema small enough to reason about completely.</li>
-    <li>Working with a real third-party validation library across two different versions of its own API, which is closer to real engineering than a tutorial that only ever shows the happy path.</li>
+    <li>Working with a real third party validation library across two different versions of its own API, which is closer to real engineering than a tutorial that only ever shows the happy path.</li>
     <li>Using a language model as one component inside a deterministic pipeline, where its only job is translation, not decision making.</li>
     <li>The discipline of measuring a claim instead of just making it, and reporting the result even when it is mixed.</li>
   </ul>
